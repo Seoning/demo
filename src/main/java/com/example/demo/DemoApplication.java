@@ -17,29 +17,29 @@ import org.springframework.web.bind.annotation.RestController;
 @SpringBootApplication
 @RestController
 public class DemoApplication extends WebSecurityConfigurerAdapter {
-	
+
 	@GetMapping("/user")
-    public Map<String, Object> user(@AuthenticationPrincipal OAuth2User principal) {
-        return Collections.singletonMap("name", principal.getAttribute("name"));
-    }
-	
+	public Map<String, Object> user(@AuthenticationPrincipal OAuth2User principal) {
+		return Collections.singletonMap("name", principal.getAttribute("name"));
+	}
+
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
 	}
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-    	// @formatter:off
-        http
-            .authorizeRequests(a -> a
-                .antMatchers("/", "/error", "/webjars/**").permitAll()
-                .anyRequest().authenticated()
-            )
-            .exceptionHandling(e -> e
-                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
-            )
-            .oauth2Login();
-        // @formatter:on
-    }
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		// @formatter:off
+		http
+		.authorizeRequests(a -> a
+				.antMatchers("/", "/error", "/webjars/**").permitAll()
+				.anyRequest().authenticated()
+				)
+		.exceptionHandling(e -> e
+				.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
+				)
+		.oauth2Login();
+		// @formatter:on
+	}
 
 }
